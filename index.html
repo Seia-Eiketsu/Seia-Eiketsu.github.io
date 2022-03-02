@@ -1,0 +1,63 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <style>
+        .ntext{
+            color:yellow;
+            font-size: 30px;
+            font-weight:bold;
+        }
+        #showtemparea{
+            background-color: black;
+            text-align: center;
+        }
+    </style>
+<script language="JavaScript">
+    function myrefresh()
+    {
+    window.location.reload();
+    }
+    setTimeout('myrefresh()',60000); //指定1秒刷新一次
+</script>
+    <script>
+        var xmlhttp = new XMLHttpRequest();
+        var url = "https://opendata.cwb.gov.tw/api/v1/rest/datastore/O-A0003-001?Authorization=CWB-1F8945CB-C9FD-419D-B716-E2B6C56BD203&format=JSON&locationName=%E6%9D%B1%E5%90%89%E5%B3%B6&elementName=TIME,TEMP,Weather&parameterName=CITY";
+        xmlhttp.onreadystatechange=function() {
+            if (xmlhttp.readyState == 4 && xmlhttp.status == 200) {
+                myFunction(xmlhttp.responseText);
+                
+            }
+        }
+        xmlhttp.open("GET", url, true);
+        xmlhttp.send();
+
+        function myFunction(response) {
+            var Nowdate=new Date();
+            var y=Nowdate.getFullYear();
+            var mt=Nowdate.getMonth();
+            var d=Nowdate.getDay();
+            var h=Nowdate.getHours();
+            var m=Nowdate.getMinutes();
+            var s=Nowdate.getSeconds();
+            var arr = JSON.parse(response);
+            var result = [];
+            for(var i in arr)
+            result.push([i, arr[i]]);
+            console.log(result);
+            var out ='<a class="ntext">澎湖即時天氣資訊</a><br />'+
+                '<a class="ntext">'+y+'年'+d+'月'+mt+'日'+'<br />'+h+'點'+m+'分'+'</a><br />'+
+                '<a class="ntext">溫度：'+result[2][1].location[0].weatherElement[0].elementValue+'</a><br />'+//觀測溫度
+                '<a class="ntext">天氣：'+result[2][1].location[0].weatherElement[1].elementValue+'</a><br />';//觀測天氣
+
+                document.getElementById("showtemparea").innerHTML = out;
+        }
+    </script>
+</head>
+
+<body>
+
+    <div id="showtemparea"></div>
+</body>
+</html>
