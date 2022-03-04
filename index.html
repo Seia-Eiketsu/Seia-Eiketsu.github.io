@@ -22,7 +22,15 @@
     setTimeout('myrefresh()',60000); //指定1秒刷新一次
 </script>
     <script>
+        //var xmlhttp = new XMLHttpRequest();
+
+        if (window.XMLHttpRequest) {
+        //Firefox, Opera, IE7, and other browsers will use the native object
         var xmlhttp = new XMLHttpRequest();
+        } else {
+        //IE 5 and 6 will use the ActiveX control
+        var xmlhttp = new ActiveXObject("Microsoft.XMLHTTP");
+        }
         var url = "https://opendata.cwb.gov.tw/api/v1/rest/datastore/O-A0003-001?Authorization=CWB-1F8945CB-C9FD-419D-B716-E2B6C56BD203&format=JSON&locationName=%E6%BE%8E%E6%B9%96&elementName=TIME,TEMP,Weather&parameterName=CITY";
         xmlhttp.onreadystatechange=function() {
             if (xmlhttp.readyState == 4 && xmlhttp.status == 200) {
